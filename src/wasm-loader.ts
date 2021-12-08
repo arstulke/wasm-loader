@@ -1,4 +1,4 @@
-import { isBrowser } from "./environment-util";
+import { isBrowser } from "./environment-util.ts";
 
 export type ModuleInstance<T> = WebAssembly.Instance & { exports: T };
 
