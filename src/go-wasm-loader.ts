@@ -1,4 +1,5 @@
-import { BaseWasmLoader, ModuleInstance, ModuleSource } from './wasm-loader.ts';
+import { BaseWasmLoader, ModuleSource } from './wasm-loader.ts';
+import type { ModuleInstance, ModuleFile } from './wasm-loader.ts';
 import "https://raw.githubusercontent.com/tinygo-org/tinygo/release/targets/wasm_exec.js";
 
 declare const global: {
@@ -11,7 +12,7 @@ declare const global: {
 
 export class GoWasmLoader extends BaseWasmLoader {
     async loadAndRun<T>(
-        moduleFile: string,
+        moduleFile: ModuleFile,
         moduleType: ModuleSource,
         moduleImports: WebAssembly.ModuleImports): Promise<ModuleInstance<T>> {
 

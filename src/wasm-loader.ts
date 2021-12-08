@@ -5,6 +5,8 @@ export enum ModuleSource {
     EXTERNAL
 }
 
+export type ModuleFile = string | ((isLocalFile: boolean) => string);
+
 export interface IWasmLoader {
     loadAndRun<T>(
         moduleFile: string,
@@ -17,18 +19,20 @@ type WasmInstantiated = WebAssembly.WebAssemblyInstantiatedSource;
 export abstract class BaseWasmLoader implements IWasmLoader {
 
     abstract loadAndRun<T>(
-        moduleFile: string,
+        moduleFile: ModuleFile,
         moduleType: ModuleSource,
         moduleImports: WebAssembly.ModuleImports): Promise<ModuleInstance<T>>;
 
-    protected async loadAndInstantiate(moduleFile: string,
+    protected async loadAndInstantiate(moduleFile: ModuleFile,
                                        moduleType: ModuleSource,
                                        importObject: WebAssembly.Imports): Promise<WasmInstantiated> {
         const isFetch = this.isFetch(moduleType);
+        const moduleFileStr = this.getModuleFileString(isFetch, moduleFile);
+
         if (isFetch) {
-            return await this.loadFromWeb(moduleFile, importObject);
+            return await this.loadFromWeb(moduleFileStr, importObject);
         } else {
-            return await this.loadFromLocalFile(moduleFile, importObject);
+            return await this.loadFromLocalFile(moduleFileStr, importObject);
         }
     }
 
@@ -53,5 +57,9 @@ export abstract class BaseWasmLoader implements IWasmLoader {
     private isFetch(moduleType: ModuleSource): boolean {
         const isBrowser = typeof window === 'object';
         return moduleType == ModuleSource.EXTERNAL || isBrowser;
+    }
+
+    private getModuleFileString(isFetch: boolean, moduleFile: ModuleFile): string {
+        return typeof moduleFile === 'function' ? moduleFile(isFetch) : moduleFile;
     }
 }
