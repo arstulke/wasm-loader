@@ -51,7 +51,7 @@ export abstract class BaseWasmLoader implements IWasmLoader {
     }
 
     private isFetch(moduleType: ModuleSource): boolean {
-        const isBrowser = typeof window === 'undefined';
+        const isBrowser = typeof window === 'object';
         return moduleType == ModuleSource.EXTERNAL || isBrowser;
     }
 }
