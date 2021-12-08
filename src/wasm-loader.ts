@@ -1,3 +1,5 @@
+import { isBrowser } from "./environment-util";
+
 export type ModuleInstance<T> = WebAssembly.Instance & { exports: T };
 
 export enum ModuleSource {
@@ -55,8 +57,7 @@ export abstract class BaseWasmLoader implements IWasmLoader {
     }
 
     private isFetch(moduleType: ModuleSource): boolean {
-        const isBrowser = typeof window === 'object';
-        return moduleType == ModuleSource.EXTERNAL || isBrowser;
+        return moduleType == ModuleSource.EXTERNAL || isBrowser();
     }
 
     private getModuleFileString(isFetch: boolean, moduleFile: ModuleFile): string {
