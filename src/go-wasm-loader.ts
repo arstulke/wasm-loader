@@ -1,5 +1,6 @@
-import { BaseWasmLoader, ModuleSource } from './wasm-loader.ts';
-import type { ModuleInstance, ModuleFile } from './wasm-loader.ts';
+import { BaseWasmLoader } from './env/wasm-loader.ts';
+import { ModuleSource } from './wasm-loader-types.ts';
+import type { ModuleInstance, ModuleFile } from './wasm-loader-types.ts';
 import "https://raw.githubusercontent.com/tinygo-org/tinygo/release/targets/wasm_exec.js";
 
 declare const global: {
