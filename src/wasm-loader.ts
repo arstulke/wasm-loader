@@ -28,7 +28,7 @@ export abstract class BaseWasmLoader implements IWasmLoader {
     protected async loadAndInstantiate(moduleFile: ModuleFile,
                                        moduleType: ModuleSource,
                                        importObject: WebAssembly.Imports): Promise<WasmInstantiated> {
-        const isFetch = this.isFetch(moduleType);
+        const isFetch = moduleType == ModuleSource.EXTERNAL || isBrowser;
         const moduleFileStr = this.getModuleFileString(isFetch, moduleFile);
 
         if (isFetch) {
@@ -54,10 +54,6 @@ export abstract class BaseWasmLoader implements IWasmLoader {
             const bytes = await response.arrayBuffer();
             return await WebAssembly.instantiate(bytes, importObject);
         }
-    }
-
-    private isFetch(moduleType: ModuleSource): boolean {
-        return moduleType == ModuleSource.EXTERNAL || isBrowser;
     }
 
     private getModuleFileString(isFetch: boolean, moduleFile: ModuleFile): string {
