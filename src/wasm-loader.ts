@@ -57,7 +57,7 @@ export abstract class BaseWasmLoader implements IWasmLoader {
     }
 
     private isFetch(moduleType: ModuleSource): boolean {
-        return moduleType == ModuleSource.EXTERNAL || isBrowser();
+        return moduleType == ModuleSource.EXTERNAL || isBrowser;
     }
 
     private getModuleFileString(isFetch: boolean, moduleFile: ModuleFile): string {

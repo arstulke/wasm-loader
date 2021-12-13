@@ -1,3 +1,1 @@
-export function isBrowser(): boolean {
-    return true;
-}
+export const isBrowser = true;
